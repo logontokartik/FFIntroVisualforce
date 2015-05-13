@@ -1,0 +1,206 @@
+<apex:page controller="BirthdayController" showHeader="false" sidebar="false" standardStyleSheets="false" doctype="html-5.0" applyBodyTag="false">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        
+        <title>Force.com Friday Intro to Visualforce</title>
+        <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+        <link rel="stylesheet" href="{!URLFOR ($Resource.pk_bootstrap, 'css/bootstrap.min.css')}"/>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{!URLFOR ($Resource.pk_bootstrap, 'css/freelancer.css')}"/>
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="{!URLFOR ($Resource.pk_bootstrap, 'font-awesome/css/font-awesome.min.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR ($Resource.sweetalert, 'sweet-alert.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR ($Resource.bsSelect, 'bootstrap-select.min.css')}"/>
+        <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+        <link href="//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+        <script src="{!URLFOR($Resource.sweetalert, 'sweet-alert.min.js')}"></script>
+        <!-- jQuery -->
+            <script src="{!URLFOR($Resource.pk_bootstrap, 'js/jquery.js')}"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{!URLFOR($Resource.pk_bootstrap, '/js/bootstrap.min.js')}"></script>
+        <!-- Plugin JavaScript -->
+            <script src="{!URLFOR($Resource.pk_bootstrap, 'js/jquery.easing.min.js')}"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="{!URLFOR($Resource.pk_bootstrap, '/js/freelancer.js')}"></script>
+        <script src="{!URLFOR($Resource.bsSelect, 'bootstrap-select.min.js')}"></script>
+		<style>
+            nav {
+            background-color:#023f5e;
+            }
+        header {
+            background-color:#384356;
+            }
+        </style>
+        <script>
+        var conId;
+        
+        $(document).ready(function(){
+            $('.greetingBtn').click(function(e){
+                e.preventDefault();
+                conId = $(this).attr('id');  
+                console.log(conId);
+            });
+            
+            $('.sendGreeting').click(function(e){
+                e.preventDefault();
+                var greetingText = $('#greetingText').val();
+                BirthdayController.sendGreeting(conId,greetingText,function(result,event){
+                    	swal({
+						title: "Success",
+						text: "Your Personal Greeting is sent",
+						type: "success",
+						confirmButtonColor: '#DD6B55',
+						timer:1500
+					});
+                    $('#myModal').modal('hide');    
+                });
+               
+            }); 
+                
+            });
+        </script>
+
+	<!--  Custom Scripting Ends here -->
+		</head>
+		<body id="page-top" class="index">
+			<!-- Navigation -->
+		<apex:form id="theform">
+			<div id="mainDiv">
+			<nav class="navbar navbar-default navbar-fixed-top">
+	        <div class="container">
+	            <!-- Brand and toggle get grouped for better mobile display -->
+	            <div class="navbar-header page-scroll">
+	                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	                    <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"><img src="https://developer.salesforce.com/resource/images/salesforce-developer-network-logo_1.png"/></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                </button>
+                    
+	                <a class="navbar-brand" href="#page-top">
+                        <img src="https://developer.salesforce.com/resource/images/salesforce-developer-network-logo_1.png"/>
+                    </a>
+	            </div>
+
+	        </div>
+	        <!-- /.container-fluid -->
+	    	</nav>
+                
+           <!-- Header Section -->
+           <apex:outputPanel id="headerPanel">
+                <script>
+					swal({
+						title: "Welcome",
+						text: "{!$User.FirstName} {!$User.LastName}",
+						type: "success",
+						confirmButtonColor: '#DD6B55',
+						timer:1500
+					});
+				</script>
+				<header>
+		        <div class="container">
+		            <div class="row">
+		                <div class="col-lg-12">
+                            <div class="intro-text">
+                                <span class="name">Force.com Friday</span>
+                                <hr class="star-light"/>
+                                <span class="skills">Contact Birthday Demo</span>
+                                <hr/>                                
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </header> 
+       		</apex:outputPanel>         
+                
+    
+            <!-- Section about the page -->
+    
+            <apex:outputPanel id="aboutPanel">
+                <section id="apiExplorer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <h2>Contact Birthdays</h2>
+                                <hr class="star-primary"/>
+                            </div>
+                        </div>
+                        <div class="list-group">
+                           
+                            <apex:repeat value="{!contacts}" var="con">
+                                 <div class="list-group-item active">
+                                    <div class="row">
+                                        <div class="pull-left">
+                                            <apex:image value="{!con.Image_URL__c}" width="50" height="50"/>
+                                        </div>
+                                        
+                                        <div class="col-md-offset-1">
+                                            <h4 class="list-group-item-heading">{!con.Name}</h4>
+                                    <span class="list-group-item-text">
+                                        <apex:outputField value="{!con.BirthDate}"/> </span> 
+                       
+                                        </div>
+                                     </div>
+    
+                                     <div class="row" style="padding:10px">
+										<button id="{!con.Id}" class="greetingBtn btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">
+                                            Send Greeting
+                                        </button> 
+                                     </div>
+                                  </div>
+                            </apex:repeat>
+                                
+                        </div>
+                    </div>
+                </section>
+            </apex:outputPanel>
+	</div>
+	<!-- End Main Div-->
+
+	<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+	<div class="scroll-top page-scroll visible-xs visble-sm">
+			<a class="btn btn-primary" href="#page-top">
+					<i class="fa fa-chevron-up"></i>
+			</a>
+	</div>
+
+	<!-- Portfolio Modals -->
+	<div class="portfolio-modal modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-content">
+					<div class="close-modal" data-dismiss="modal">
+							<div class="lr">
+									<div class="rl">
+									</div>
+							</div>
+					</div>
+					<div class="container">
+                        	<h2>Send a Personal Greeting</h2>
+													<hr class="star-primary"/>
+							<div class="row">
+									<textarea class="form-control" id="greetingText"></textarea>
+							</div>
+                        <div class="row" style="padding:10px">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary sendGreeting">Send</button>
+                        </div>
+					</div>
+			</div>
+	</div>
+	
+
+	<div id="transparent" style="display:none; position: absolute;top:0;left:0;width: 100%;height:100%;z-index:2;opacity:0.4;filter: alpha(opacity = 50)">
+	</div>
+
+	</apex:form>
+	</body>
+</apex:page>

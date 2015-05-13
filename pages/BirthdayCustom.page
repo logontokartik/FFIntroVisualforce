@@ -1,0 +1,96 @@
+<apex:page controller="BirthdayController" standardStylesheets="false" sidebar="false" showHeader="false">
+    <head>
+      <meta charset="utf-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <meta name="robots" content="index, follow"/>
+      <title>Force.com Fridays</title>
+
+ <!-- Stylesheets -->
+ 
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+ <!-- Optional theme -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"/>
+ <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css"/>
+ <!-- Javascript Libraries -->
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script>
+        var conId;
+        
+        $(document).ready(function(){
+                $('.greetingBtn').click(function(){
+                    conId = $(this).attr('id');  
+                    console.log(conId);
+                });
+            
+            $('.sendGreeting').click(function(e){
+                e.preventDefault();
+                var greetingText = $('#greetingText').val();
+                BirthdayController.sendGreeting(conId,greetingText,function(result,event){
+                    $('#myModal').modal('hide');    
+                });
+               
+            }); 
+                
+            });
+        </script>
+</head>
+    <div class="container">
+        <div class="jumbotron">
+              <div class="row">
+              <div class="col-md-6">
+                <img src="https://developer.salesforce.com/resource/images/salesforce-developer-network-logo_1.png" alt="Salesforce1 Platform" height="100"></img>
+              </div>
+              <div class="col-md-6">
+                <img src="https://dl.dropboxusercontent.com/u/74862951/forcefriday.png" height="150px" alt="Force.com Friday">
+                </img>
+              </div>
+              </div>
+            </div>
+        <div class="row">
+            <apex:dataTable value="{!contacts}" var="con" styleClass="table table-striped table-hover" rowClasses="info,warning">
+                 <apex:column headerValue="Photo">
+                     <apex:image value="{!con.Image_URL__c}" width="50" height="50"/>
+
+                </apex:column>
+                <apex:column headerValue="Name">
+                    <apex:outputField value="{!con.Name}"/>
+                </apex:column>
+                <apex:column headerValue="Birthday">
+                    <apex:outputText value="{0,date,MMMM dd}">
+                        <apex:param value="{!con.BirthDate}"/>
+                    </apex:outputText>
+                </apex:column>
+                <apex:column headerValue="Address">
+                    <apex:outputField value="{!con.MailingStreet}"/>
+                </apex:column>
+                <apex:column >
+                    <button id="{!con.Id}" class="greetingBtn btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                        Send Greeting
+                    </button>                    
+                </apex:column>
+            </apex:dataTable>
+        </div>
+<!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Send a Personal greeting</h4>
+          </div>
+          <div class="modal-body">
+            <textarea class="form-control" id="greetingText"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary sendGreeting">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+
+</apex:page>
